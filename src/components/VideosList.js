@@ -22,8 +22,16 @@ class VideosList extends Component {
 	async loadVideos() {
 		const response = await fetch('data/videos.json');
 		const videos = await response.json();
-		videos.forEach(video => video.id = VideosList.getNextId());
-		this.setState({ videos });
+		videos.forEach(video => {
+			video.id = VideosList.getNextId();
+			video.sortValue = Math.random();
+		});
+		videos.sort((video0, video1) => video0.sortValue - video1.sortValue);
+		this.setState(prevState => {
+			return {
+				videos: prevState.videos.concat(videos),
+			}
+		});
 	}
 	
 	render() {

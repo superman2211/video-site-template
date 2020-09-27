@@ -1,7 +1,8 @@
 import React from 'react';
 import logo from '../images/logo.svg';
-import search from '../images/search.svg';
-import person from '../images/person.svg';
+import { ReactComponent as Logo } from '../images/logo.svg';
+import { ReactComponent as Search } from '../images/search.svg';
+import { ReactComponent as Person } from '../images/person.svg';
 
 const styles = {
 	header: {
@@ -9,35 +10,43 @@ const styles = {
 		height: '40pt',
 		display: 'flex',
 		justifyContent: 'space-between',
-		fontSize: '20pt',
-		fontFamily: 'Oswald',
-		color: 'black',
 		filter: 'drop-shadow(0 2pt 2pt rgba(0, 0, 0, 0.2))',
 	},
 	image: {
-		margin: '5pt',
-		width: '30pt',
-		height: '30pt',
+		margin: '8pt',
+		width: '24pt',
+		height: '24pt',
+	},
+	logo: {
+		fill: 'red',
+	},
+	button: {
+		fill: 'gray',
 	},
 	title: {
+		fontSize: '15pt',
+		fontFamily: 'Oswald',
+		color: 'black',
 		display: 'flex',
 		alignItems: 'center',
 	}
 }
 
 function Header() {
+	const logoStyle = { ...styles.image, ...styles.logo };
+	const buttonStyle = { ...styles.image, ...styles.button };
 	return (
 		<div style={styles.header}>
 			<div style={styles.title}>
-				<img src={logo} style={styles.image} alt="CatTube" />
+				<Logo style={logoStyle}/>
 				<div>
-					<span>CatTube</span>
+					<span>TestTube</span>
 				</div>
 			</div>
 			
 			<div>
-				<img src={search} style={styles.image} alt="Search" />
-				<img src={person} style={styles.image} alt="Login" />
+				<Search style={buttonStyle} />
+				<Person style={buttonStyle} />
 			</div>
 		</div>
 	);

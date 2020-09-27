@@ -20,5 +20,13 @@
 	{
 		"title": "Introducing Chromecast",
 		"src": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
+	},
+	{
+		"title": "Sintel is an independently produced short film",
+		"src": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"
+	},
+	{
+		"title": "Smoking Tire takes the all-new Subaru",
+		"src": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4"
 	}
 ]
