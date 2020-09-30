@@ -26,6 +26,11 @@ const preparedStyles = prepareStyles(
 );
 
 class VideoPreview extends Component {
+	constructor() {
+		super();
+		this.ref = React.createRef();
+	}
+
 	getImage() {
 		const { data } = this.props;
 		const styles = selectStyle(preparedStyles);
@@ -35,21 +40,21 @@ class VideoPreview extends Component {
 	}
 
 	getVideo() {
-		const { data } = this.props;
+		const { data, isPlaying } = this.props;
 		const styles = selectStyle(preparedStyles);
 		return (
-			<video style={styles.video} src={data.src} autoPlay loop muted playsInline />
+			<video style={styles.video} src={data.src} autoPlay={isPlaying} loop muted playsInline />
 		);
 	}
 
 	render() {
-		const { data } = this.props;
-		const preview = data.image ? this.getImage() : this.getVideo();
+		const { data, isPlaying } = this.props;
+		const preview = isPlaying || !data.image ? this.getVideo() : this.getImage();
 		const styles = selectStyle(preparedStyles);
 		return (
-			<div>
+			<div ref={this.ref}>
 				{preview}
-				<div style={styles.title}>{this.props.data.title}</div>
+				<div style={styles.title}>{data.title}</div>
 			</div>
 		);
 	}

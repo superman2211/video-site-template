@@ -12,12 +12,13 @@ function updateBackgroundColor() {
 updateBackgroundColor();
 
 function App() {
-  return (
-    <div className="App">
-		<Header/>
-		<VideosList/>
-    </div>
-  );
+	console.log(window.innerWidth);
+	return (
+		<div className="App">
+			<Header/>
+			<VideosList dataSource='data/videos.json'/>
+		</div>
+	);
 }
 
 export default App;
