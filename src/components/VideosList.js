@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import VideoPreview from './VideoPreview';
 
 class VideosList extends Component {
@@ -6,6 +6,8 @@ class VideosList extends Component {
 
 	constructor() {
 		super();
+
+		this.ref = createRef();
 
 		this.state = {
 			isLoading: false,
@@ -35,6 +37,13 @@ class VideosList extends Component {
 		if (bottom <= window.innerHeight) {
 			this.loadNextVideos();
 		}
+
+		const currentVideo = Array.from(this.ref.current.childNodes).findIndex(child => {
+			const bounds = child.getBoundingClientRect();
+			return bounds.top > 0;
+		});
+
+		this.setState({ currentVideo });
 	}
 
 	async loadNextVideos() {
@@ -42,12 +51,7 @@ class VideosList extends Component {
 			return;
 		}
 		
-		this.setState(prevState => {
-			return {
-				videos: prevState.videos,
-				isLoading: true,
-			}
-		});
+		this.setState({ isLoading: true });
 
 		const response = await fetch(this.props.dataSource);
 		const videos = await response.json();
@@ -68,14 +72,14 @@ class VideosList extends Component {
 	}
 	
 	render() {
-		const { videos, currentVideo} = this.state;
+		const { videos, currentVideo } = this.state;
 
 		const videosList = videos.map((video, index) => {
 			return (<VideoPreview key={video.id} data={video} isPlaying={currentVideo === index}/>)
 		});
 
 		return (
-			<div>
+			<div ref={this.ref}>
 				{videosList}
 			</div>
 		);
