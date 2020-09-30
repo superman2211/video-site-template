@@ -4,12 +4,17 @@ import { ReactComponent as Search } from '../images/search.svg';
 import { ReactComponent as Person } from '../images/person.svg';
 import iconStyle from '../styles/iconStyle';
 import generalStyles from '../styles/generalStyles';
+import headerStyle from '../styles/headerStyle';
 import { selectStyle, prepareStyles } from '../utils/stylesUtils';
 
 const preparedStyles = prepareStyles(
 	{
 		header: {
-			height: '40pt',
+			position: 'fixed',
+			top: '0px',
+			transition: 'top 0.2s',
+			height: headerStyle.height,
+			width: headerStyle.width,
 			display: 'flex',
 			justifyContent: 'space-between',
 			filter: 'drop-shadow(0 2pt 2pt rgba(0, 0, 0, 0.2))',
@@ -22,7 +27,7 @@ const preparedStyles = prepareStyles(
 			...iconStyle,
 		},
 		title: {
-			fontSize: '15pt',
+			fontSize: '20px',
 			fontFamily: 'Oswald',
 			display: 'flex',
 			alignItems: 'center',
@@ -52,11 +57,13 @@ const preparedStyles = prepareStyles(
 	}
 );
 
-function Header() {
+function Header(props) {
 	const styles = selectStyle(preparedStyles);
 
+	const containerStyle = { ...styles.header, top: props.visible ? '0px' : `-${headerStyle.height}` };
+
 	return (
-		<div style={styles.header}>
+		<div style={containerStyle}>
 			<div style={styles.title}>
 				<Logo style={styles.logo}/>
 				<div>

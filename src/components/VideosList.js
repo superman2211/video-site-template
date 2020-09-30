@@ -1,8 +1,15 @@
 import React, { Component, createRef } from 'react';
 import VideoPreview from './VideoPreview';
+import headerStyle from '../styles/headerStyle';
+
+const styles = {
+	marginTop: headerStyle.height,
+};
 
 class VideosList extends Component {
 	static nextId = 0;
+
+	lastPosition = 0;
 
 	constructor() {
 		super();
@@ -34,6 +41,16 @@ class VideosList extends Component {
 		const bounds = document.body.getBoundingClientRect();
 		const bottom = bounds.top + bounds.height;
 		
+		const scrollDelta = bounds.top - this.lastPosition;
+		
+		if (bounds.top < 0 && scrollDelta < 0) {
+			this.props.onScroll(false);
+		} else if (scrollDelta > 0) {
+			this.props.onScroll(true);
+		}
+
+		this.lastPosition = bounds.top;
+
 		if (bottom <= window.innerHeight) {
 			this.loadNextVideos();
 		}
@@ -79,7 +96,7 @@ class VideosList extends Component {
 		});
 
 		return (
-			<div ref={this.ref}>
+			<div ref={this.ref} style={styles}>
 				{videosList}
 			</div>
 		);

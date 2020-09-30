@@ -5,12 +5,12 @@ import { selectStyle, prepareStyles } from '../utils/stylesUtils';
 const preparedStyles = prepareStyles(
 	{
 		video: {
-			width: window.innerWidth + 'px',
-			height: Math.round(window.innerWidth / 16 * 9) + 'px',
+			width: '100%',
+			height: 'auto',
 			margin: '0',
 		},
 		title: {
-			margin: '8pt',
+			margin: '10px 10px 20px 10px',
 		},
 	},
 	{
@@ -59,16 +59,11 @@ class VideoPreview extends Component {
 		const { data, isPlaying } = this.props;
 		const styles = selectStyle(preparedStyles);
 
-		const videoVisible = isPlaying || !data.image;
-		const videoStyle = { ...styles.video, display: videoVisible ? 'inline' : 'none' };
-		const imageStyle = { ...styles.video, display: videoVisible ? 'none' : 'inline' };
-
 		this.updatePlayingState();
 		
 		return (
 			<div>
-				<video style={videoStyle} ref={this.ref} src={data.src} loop muted playsInline />
-				<img style={imageStyle} src={data.image} alt={data.title}/>
+				<video style={styles.video} ref={this.ref} src={data.src} autoPlay={isPlaying} loop muted playsInline />
 				<div style={styles.title}>{data.title}</div>
 			</div>
 		);
