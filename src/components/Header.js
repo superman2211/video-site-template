@@ -67,7 +67,7 @@ function Header(props) {
 			<div style={styles.title}>
 				<Logo style={styles.logo}/>
 				<div>
-					<span>TestTube</span>
+					<span>Videos</span>
 				</div>
 			</div>
 			
