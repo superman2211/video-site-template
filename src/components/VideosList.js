@@ -1,9 +1,18 @@
 import React, { Component, createRef } from 'react';
 import VideoPreview from './VideoPreview';
 import headerStyle from '../styles/headerStyle';
+import Preloader from './Preloader';
 
 const styles = {
-	marginTop: headerStyle.height,
+	container: {
+		marginTop: headerStyle.height,
+	},
+	preloader: {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: '70px',
+	}
 };
 
 class VideosList extends Component {
@@ -96,8 +105,11 @@ class VideosList extends Component {
 		});
 
 		return (
-			<div ref={this.ref} style={styles}>
-				{videosList}
+			<div ref={ this.ref } style={ styles.container }>
+				{ videosList }
+				<div style={ styles.preloader }>
+					<Preloader/>
+				</div>
 			</div>
 		);
 	}
