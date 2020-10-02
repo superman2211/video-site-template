@@ -1,6 +1,9 @@
 import React, { Component, createRef } from 'react';
 import generalStyles from '../styles/generalStyles';
+import iconStyle from '../styles/iconStyle';
 import { selectStyle, prepareStyles } from '../utils/stylesUtils';
+import { ReactComponent as LikeIcon } from '../images/like.svg';
+import { ReactComponent as FavoriteIcon } from '../images/favorite.svg';
 
 const WIDTH_TO_HEIGHT = 9 / 16;
 
@@ -11,18 +14,35 @@ const preparedStyles = prepareStyles(
 			padding: 0,
 			backgroundColor: 'black',
 		},
-		title: {
+		footer: {
+			display: 'flex',
+			justifyContent: 'space-between',
+			alignItems: 'center',
 			margin: '10px 10px 20px 10px',
+		},
+		footerButtons: {
+			display: 'flex',
+			justifyContent: 'space-between',
+			alignItems: 'center',
+		},
+		button: {
+			...iconStyle,
 		},
 	},
 	{
 		title: {
 			color: generalStyles.light.color,
 		},
+		button: {
+			fill: generalStyles.light.fill,
+		},
 	},
 	{
 		title: {
 			color: generalStyles.dark.color,
+		},
+		button: {
+			fill: generalStyles.dark.fill,
 		},
 	}
 );
@@ -57,6 +77,18 @@ class VideoPreview extends Component {
 		}
 	}
 
+	formatCount(count) {
+		if (count > 1000000) {
+			return Math.round(count / 1000000) + 'M';
+		}
+		
+		if (count > 1000) {
+			return Math.round(count / 1000) + 'K';
+		}
+
+		return count;
+	}
+
 	render() {
 		const { data, isPlaying } = this.props;
 		const styles = selectStyle(preparedStyles);
@@ -79,7 +111,9 @@ class VideoPreview extends Component {
 			display: isPlaying ? 'none' : 'block',
 			width, height,
 		};
-		
+
+		const likeCountFormatted = this.formatCount(data.likeCount);
+
 		const sources = data.sources.map((source, index) => (<source key={index} src={source}/>));
 		
 		this.updatePlayingState();
@@ -92,7 +126,14 @@ class VideoPreview extends Component {
 					</video>
 				</div>
 				<img style={imageStyle} src={data.thumb} alt={data.subtitle} />
-				<div style={styles.title}>{data.title}</div>
+				<div style={styles.footer}>
+					<span style={styles.title}>{data.title}</span>
+					<div style={styles.footerButtons}>
+						<LikeIcon style={styles.button} />
+						<span>{likeCountFormatted}</span>
+						<FavoriteIcon style={styles.button} />
+					</div>
+				</div>
 			</div>
 		);
 	}

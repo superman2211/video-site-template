@@ -1,5 +1,5 @@
 export default {
-	margin: '8pt',
-	width: '24pt',
-	height: '24pt',
+	padding: '4pt',
+	width: '14pt',
+	height: '14pt',
 };
