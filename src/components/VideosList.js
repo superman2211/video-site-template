@@ -60,7 +60,7 @@ class VideosList extends Component {
 
 		this.lastPosition = bounds.top;
 
-		if (bottom <= window.innerHeight) {
+		if (bottom <= window.innerHeight + 1) {
 			this.loadNextVideos();
 		}
 
