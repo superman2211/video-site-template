@@ -21,7 +21,6 @@ const preparedStyles = prepareStyles(
 		},
 		logo: {
 			...iconStyle,
-			fill: 'red',
 		},
 		button: {
 			...iconStyle,
