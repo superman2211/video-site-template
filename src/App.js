@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import Header from "./components/Header";
 import VideosList from './components/VideosList';
-import generalStyles from './styles/generalStyles';
-import { selectStyle } from './utils/stylesUtils';
+import { updateBackgroundStyle } from './utils/stylesUtils';
 
-function updateBackgroundColor() {
-	const style = selectStyle(generalStyles);
-	document.body.style.backgroundColor = style.backgroundColor;
-}
-
-updateBackgroundColor();
+updateBackgroundStyle();
 
 class App extends Component {
 	constructor() {

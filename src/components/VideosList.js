@@ -85,6 +85,8 @@ class VideosList extends Component {
 		videos.forEach(video => {
 			video.id = VideosList.getNextId();
 			video.sortValue = Math.random();
+			video.comments = Math.round(Math.random() * 1000000);
+			video.time = Math.round(Math.random() * 60 * 60);
 		});
 		
 		videos.sort((video0, video1) => video0.sortValue - video1.sortValue);

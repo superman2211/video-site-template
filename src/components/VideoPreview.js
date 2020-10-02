@@ -2,12 +2,14 @@ import React, { Component, createRef } from 'react';
 import generalStyles from '../styles/generalStyles';
 import { selectStyle, prepareStyles } from '../utils/stylesUtils';
 
+const WIDTH_TO_HEIGHT = 9 / 16;
+
 const preparedStyles = prepareStyles(
 	{
 		video: {
-			width: '100%',
-			height: 'auto',
-			margin: '0',
+			margin: 0,
+			padding: 0,
+			backgroundColor: 'black',
 		},
 		title: {
 			margin: '10px 10px 20px 10px',
@@ -59,11 +61,37 @@ class VideoPreview extends Component {
 		const { data, isPlaying } = this.props;
 		const styles = selectStyle(preparedStyles);
 
+		const width = `${window.innerWidth}px`;
+		const height = `${Math.ceil(window.innerWidth * WIDTH_TO_HEIGHT)}px`;
+
+		const containerStyle = {
+			display: isPlaying ? 'block' : 'none',
+			width, height,
+		};
+
+		const videoStyle = {
+			...styles.video,
+			width, height,
+		};
+
+		const imageStyle = {
+			...styles.video,
+			display: isPlaying ? 'none' : 'block',
+			width, height,
+		};
+		
+		const sources = data.sources.map((source, index) => (<source key={index} src={source}/>));
+		
 		this.updatePlayingState();
 		
 		return (
 			<div>
-				<video style={styles.video} ref={this.ref} src={data.src} autoPlay={isPlaying} loop muted playsInline />
+				<div style={containerStyle}>
+					<video style={videoStyle} ref={this.ref} autoPlay={isPlaying} loop muted playsInline>
+						{sources}
+					</video>
+				</div>
+				<img style={imageStyle} src={data.thumb} alt={data.subtitle} />
 				<div style={styles.title}>{data.title}</div>
 			</div>
 		);
