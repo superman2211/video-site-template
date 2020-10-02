@@ -20,6 +20,8 @@ class VideosList extends Component {
 
 	lastPosition = 0;
 
+	updateCurrentVideoTimer = -1;
+
 	constructor() {
 		super();
 
@@ -69,7 +71,11 @@ class VideosList extends Component {
 			return bounds.top > 0;
 		});
 
-		this.setState({ currentVideo });
+		clearTimeout(this.updateCurrentVideoTimer);
+		this.updateCurrentVideoTimer = setTimeout(() => {
+			console.log('update current video', currentVideo);
+			this.setState({ currentVideo });
+		}, 1000);
 	}
 
 	async loadNextVideos() {

@@ -53,30 +53,6 @@ class VideoPreview extends Component {
 		this.ref = createRef();
 	}
 
-	async updatePlayingState() {
-		const video = this.ref.current;
-		
-		if (!video) {
-			return;
-		}
-
-		if (video.isPlaying !== this.props.isPlaying) {
-			if (this.props.isPlaying) {
-				try {
-					await video.play();
-				} catch(e) {
-					this.updatePlayingState();
-				}
-			} else {
-				try {
-					await video.pause();
-				} catch (e) {
-					this.updatePlayingState();
-				}
-			}
-		}
-	}
-
 	formatCount(count) {
 		if (count > 1000000) {
 			return Math.round(count / 1000000) + 'M';
@@ -96,41 +72,50 @@ class VideoPreview extends Component {
 		const width = `${window.innerWidth}px`;
 		const height = `${Math.ceil(window.innerWidth * WIDTH_TO_HEIGHT)}px`;
 
-		const containerStyle = {
-			display: isPlaying ? 'block' : 'none',
-			width, height,
-		};
-
-		const videoStyle = {
-			...styles.video,
-			width, height,
-		};
-
-		const imageStyle = {
-			...styles.video,
-			display: isPlaying ? 'none' : 'block',
-			width, height,
-		};
-
 		const likeCountFormatted = this.formatCount(data.likeCount);
 
-		const sources = data.sources.map((source, index) => (<source key={index} src={source}/>));
-		
-		this.updatePlayingState();
-		
-		return (
-			<div>
+		let content = null;
+
+		if (isPlaying) {
+			const containerStyle = {
+				display: isPlaying ? 'block' : 'none',
+				width, height,
+			};
+
+			const videoStyle = {
+				...styles.video,
+				width, height,
+			};
+
+			const sources = data.sources.map((source, index) => (<source key={index} src={source} />));
+
+			content = (
 				<div style={containerStyle}>
-					<video style={videoStyle} ref={this.ref} autoPlay={isPlaying} loop muted playsInline>
+					<video style={videoStyle} ref={this.ref} autoPlay loop muted playsInline>
 						{sources}
 					</video>
 				</div>
+			);
+		} else {
+			const imageStyle = {
+				...styles.video,
+				display: isPlaying ? 'none' : 'block',
+				width, height,
+			};
+
+			content = (
 				<img style={imageStyle} src={data.thumb} alt={data.subtitle} />
+			);
+		}
+		
+		return (
+			<div>
+				{content}
 				<div style={styles.footer}>
 					<span style={styles.title}>{data.title}</span>
 					<div style={styles.footerButtons}>
 						<LikeIcon style={styles.button} />
-						<span>{likeCountFormatted}</span>
+						<span style={styles.title}>{likeCountFormatted}</span>
 						<FavoriteIcon style={styles.button} />
 					</div>
 				</div>
