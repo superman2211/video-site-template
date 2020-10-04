@@ -19,6 +19,10 @@ class App extends Component {
 	}
 
 	onFilter = (filter) => {
+		if (filter) {
+			window.scrollTo(0, 0);
+		}
+		
 		this.setState({ filter });
 	};
 

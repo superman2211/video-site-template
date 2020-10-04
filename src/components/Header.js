@@ -91,6 +91,7 @@ class Header extends Component {
 
 	onSearchClose = () => {
 		this.setState({ showSearch: false });
+		this.props.onFilter(null);
 	}
 
 	onSearchChange = (e) => {

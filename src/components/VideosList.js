@@ -119,15 +119,11 @@ class VideosList extends Component {
 		
 		const filteredVideos = !filter ? videos : videos.filter(video => this.containsFilter(video, filter));
 
-		if (filter) {
-			document.body.scrollTop = 0;
-		}
-
 		const videosList = filteredVideos.map((video, index) => {
 			return (<VideoPreview key={video.id} data={video} isPlaying={currentVideo === index}/>)
 		});
 
-		const preloaderStyle = { ...styles.preloader, display: filter ? 'none' : 'block' };
+		const preloaderStyle = { ...styles.preloader, display: filter ? 'none' : styles.preloader.display };
 
 		return (
 			<div ref={ this.ref } style={ styles.container }>
