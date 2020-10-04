@@ -9,6 +9,10 @@ const WIDTH_TO_HEIGHT = 9 / 16;
 
 const preparedStyles = prepareStyles(
 	{
+		title: {
+			fontSize: '15px',
+			fontFamily: 'Roboto, sans-serif',
+		},
 		video: {
 			margin: 0,
 			padding: 0,
@@ -18,7 +22,7 @@ const preparedStyles = prepareStyles(
 			display: 'flex',
 			justifyContent: 'space-between',
 			alignItems: 'center',
-			margin: '10px 10px 20px 10px',
+			margin: '5px 10px 30px 10px',
 		},
 		footerButtons: {
 			display: 'flex',
@@ -27,7 +31,7 @@ const preparedStyles = prepareStyles(
 		},
 		button: {
 			...iconStyle,
-		},
+		}
 	},
 	{
 		title: {

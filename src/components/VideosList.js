@@ -40,7 +40,6 @@ class VideosList extends Component {
 
 	componentDidMount() {
 		this.loadNextVideos();
-
 		window.addEventListener('scroll', this.handleScroll);
 	}
 
@@ -73,12 +72,15 @@ class VideosList extends Component {
 
 		clearTimeout(this.updateCurrentVideoTimer);
 		this.updateCurrentVideoTimer = setTimeout(() => {
-			console.log('update current video', currentVideo);
 			this.setState({ currentVideo });
 		}, 1000);
 	}
 
 	async loadNextVideos() {
+		if (this.props.filter) {
+			return;
+		}
+
 		if (this.state.isLoading) {
 			return;
 		}
@@ -104,18 +106,33 @@ class VideosList extends Component {
 			}
 		});
 	}
+
+	containsFilter(video, filter) {
+		const { title, description } = video;
+		filter = filter.toLowerCase();
+		return title.toLowerCase().indexOf(filter) !== -1 || description.toLowerCase().indexOf(filter) !== -1;
+	}
 	
 	render() {
 		const { videos, currentVideo } = this.state;
+		const { filter } = this.props;
+		
+		const filteredVideos = !filter ? videos : videos.filter(video => this.containsFilter(video, filter));
 
-		const videosList = videos.map((video, index) => {
+		if (filter) {
+			document.body.scrollTop = 0;
+		}
+
+		const videosList = filteredVideos.map((video, index) => {
 			return (<VideoPreview key={video.id} data={video} isPlaying={currentVideo === index}/>)
 		});
+
+		const preloaderStyle = { ...styles.preloader, display: filter ? 'none' : 'block' };
 
 		return (
 			<div ref={ this.ref } style={ styles.container }>
 				{ videosList }
-				<div style={ styles.preloader }>
+				<div style={ preloaderStyle }>
 					<Preloader/>
 				</div>
 			</div>

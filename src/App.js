@@ -9,21 +9,26 @@ class App extends Component {
 	constructor() {
 		super();
 		this.state = {
-			headerIsVisible: true,
+			showHeader: true,
+			filter: null,
 		};
 	}
 
-	onScroll = (positive) => {
-		this.setState({
-			headerIsVisible: positive,
-		});
+	onScroll = (showHeader) => {
+		this.setState({ showHeader });
 	}
 
+	onFilter = (filter) => {
+		this.setState({ filter });
+	};
+
 	render() {
+		const { showHeader, filter } = this.state;
+
 		return (
 			<div className="App">
-				<Header visible={this.state.headerIsVisible}/>
-				<VideosList dataSource='data/videos.json' onScroll={this.onScroll}/>
+				<Header visible={showHeader} onFilter={this.onFilter}/>
+				<VideosList dataSource='data/videos.json' filter={filter} onScroll={this.onScroll}/>
 			</div>
 		);
 	}

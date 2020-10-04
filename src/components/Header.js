@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { ReactComponent as LogoIcon } from '../images/logo.svg';
 import { ReactComponent as SearchIcon } from '../images/search.svg';
 import { ReactComponent as PersonIcon } from '../images/person.svg';
+import { ReactComponent as CloseIcon } from '../images/close.svg';
 import buttonIconStyle from '../styles/buttonIconStyle';
 import generalStyles from '../styles/generalStyles';
 import headerStyle from '../styles/headerStyle';
@@ -30,7 +31,21 @@ const preparedStyles = prepareStyles(
 			fontFamily: 'Oswald',
 			display: 'flex',
 			alignItems: 'center',
-		}
+		},
+		searchContainer: {
+			display: 'flex',
+			alignItems: 'center',
+			width: '100%',
+		},
+		search: {
+			fontSize: '15px',
+			fontFamily: 'Roboto, sans-serif',
+			outline: 'none',
+			margin: '10px',
+			width: '100%',
+			border: 0,
+			borderBottom: '3px solid darkblue'
+		},
 	},
 	{
 		header: {
@@ -40,6 +55,9 @@ const preparedStyles = prepareStyles(
 			fill: generalStyles.light.fill,
 		},
 		title: {
+			color: generalStyles.light.color,
+		},
+		search: {
 			color: generalStyles.light.color,
 		}
 	},
@@ -52,30 +70,71 @@ const preparedStyles = prepareStyles(
 		},
 		title: {
 			color: generalStyles.dark.color,
+		},
+		search: {
+			color: generalStyles.dark.color,
 		}
 	}
 );
 
-function Header(props) {
-	const styles = selectStyle(preparedStyles);
+class Header extends Component {
+	constructor() {
+		super();
+		this.state = {
+			showSearch: false,
+		};
+	}
 
-	const containerStyle = { ...styles.header, top: props.visible ? '0px' : `-${headerStyle.height}` };
+	onSearchClick = () => {
+		this.setState({ showSearch: true });
+	}
 
-	return (
-		<div style={containerStyle}>
-			<div style={styles.title}>
-				<LogoIcon style={styles.logo}/>
+	onSearchClose = () => {
+		this.setState({ showSearch: false });
+	}
+
+	onSearchChange = (e) => {
+		this.props.onFilter(e.target.value);
+	}
+
+	render() {
+		const { visible } = this.props;
+		const { showSearch } = this.state;
+
+		const styles = selectStyle(preparedStyles);
+
+		if (showSearch) {
+			return (
+				<div style={styles.header}>
+					<div style={styles.searchContainer}>
+						<input autoFocus style={styles.search} type='text' placeholder='Search video' onChange={this.onSearchChange}/>
+					</div>
+
+					<div>
+						<CloseIcon style={styles.button} onClick={this.onSearchClose} />
+					</div>
+				</div>
+			);
+		}
+
+		const containerStyle = { ...styles.header, top: visible ? '0px' : `-${headerStyle.height}` };
+
+		return (
+			<div style={containerStyle}>
+				<div style={styles.title}>
+					<LogoIcon style={styles.logo}/>
+					<div>
+						<span>Videos</span>
+					</div>
+				</div>
+				
 				<div>
-					<span>Videos</span>
+					<SearchIcon style={styles.button} onClick={this.onSearchClick}/>
+					<PersonIcon style={styles.button} />
 				</div>
 			</div>
-			
-			<div>
-				<SearchIcon style={styles.button} />
-				<PersonIcon style={styles.button} />
-			</div>
-		</div>
-	);
+		);
+	}
 }
 
 
