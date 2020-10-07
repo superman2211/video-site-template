@@ -17,6 +17,7 @@ class App extends Component {
 			filter: null,
 			selectedVideo: null,
 		};
+		this.lastScrollPosition = 0;
 	}
 
 	onScroll = (showHeader) => {
@@ -32,11 +33,13 @@ class App extends Component {
 	};
 
 	onSelectVideo = (selectedVideo) => {
+		this.lastScrollPosition = document.documentElement.scrollTop;
 		this.setState({ selectedVideo });
 	}
 
 	onVideoClose = () => {
 		this.setState({ selectedVideo: null });
+		setTimeout(() => window.scrollTo(0, this.lastScrollPosition), 1);
 	}
 
 	render() {
@@ -51,17 +54,18 @@ class App extends Component {
 					onVideoClose={this.onVideoClose}
 				/>
 				
-				<div style={{ display: selectedVideo ? 'none' : 'block' }}>
+				<div style={{ marginTop: headerStyle.height }}>
 					<VideosList
+						visible={!selectedVideo}
 						dataSource={DATA_SOURCE}
 						filter={filter}
 						onScroll={this.onScroll}
 						onSelectVideo={this.onSelectVideo}
 					/>
-				</div>
 				
-				<div style={{ display: selectedVideo ? 'block' : 'none', marginTop: headerStyle.height, }}>
-					<VideoPreview data={selectedVideo} isPlaying={true} controls={true}/>
+					<div style={{ display: selectedVideo ? 'block' : 'none' }}>
+						<VideoPreview data={selectedVideo} isPlaying={true} controls={true}/>
+					</div>
 				</div>
 			</div>
 		);

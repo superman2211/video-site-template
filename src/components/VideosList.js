@@ -1,12 +1,8 @@
 import React, { Component, createRef } from 'react';
 import VideoPreview from './VideoPreview';
-import headerStyle from '../styles/headerStyle';
 import Preloader from './Preloader';
 
 const styles = {
-	container: {
-		marginTop: headerStyle.height,
-	},
 	preloader: {
 		display: 'flex',
 		justifyContent: 'center',
@@ -48,6 +44,10 @@ class VideosList extends Component {
 	}
 
 	handleScroll = () => {
+		if (!this.props.visible) {
+			return;
+		}
+
 		const bounds = document.body.getBoundingClientRect();
 		const bottom = bounds.top + bounds.height;
 		
@@ -120,7 +120,7 @@ class VideosList extends Component {
 	render() {
 		const { videos, currentVideo } = this.state;
 		const { filter } = this.props;
-		
+
 		const filteredVideos = !filter ? videos : videos.filter(video => this.containsFilter(video, filter));
 
 		const videosList = filteredVideos.map((video, index) => {
@@ -131,8 +131,12 @@ class VideosList extends Component {
 
 		const preloaderStyle = { ...styles.preloader, display: filter ? 'none' : styles.preloader.display };
 
+		const containerStyle = {
+			display: this.props.visible ? 'block' : 'none'
+		}
+
 		return (
-			<div ref={ this.ref } style={ styles.container }>
+			<div ref={ this.ref } style={ containerStyle }>
 				{ videosList }
 				<div style={ preloaderStyle }>
 					<Preloader/>
