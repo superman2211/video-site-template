@@ -99,10 +99,27 @@ class Header extends Component {
 	}
 
 	render() {
-		const { visible } = this.props;
+		const { visible, selectedVideo } = this.props;
 		const { showSearch } = this.state;
 
 		const styles = selectStyle(preparedStyles);
+
+		if (selectedVideo) {
+			return (
+				<div style={styles.header}>
+					<div style={styles.title}>
+						<LogoIcon style={styles.logo} />
+						<div>
+							<span>Videos</span>
+						</div>
+					</div>
+					
+					<div>
+						<CloseIcon style={styles.button} onClick={this.props.onVideoClose} />
+					</div>
+				</div>
+			);
+		}
 
 		if (showSearch) {
 			return (

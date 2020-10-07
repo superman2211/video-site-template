@@ -22,7 +22,7 @@ const preparedStyles = prepareStyles(
 			display: 'flex',
 			justifyContent: 'space-between',
 			alignItems: 'center',
-			margin: '5px 10px 30px 10px',
+			margin: '5px 10px 10px 10px',
 		},
 		footerButtons: {
 			display: 'flex',
@@ -69,8 +69,19 @@ class VideoPreview extends Component {
 		return count;
 	}
 
+	onClick = () => {
+		if (this.props.onClick) {
+			this.props.onClick(this.props.data);
+		}
+	}
+
 	render() {
-		const { data, isPlaying } = this.props;
+		const { data, isPlaying, controls } = this.props;
+
+		if (!data) {
+			return (<div>Video not found</div>);
+		}
+		
 		const styles = selectStyle(preparedStyles);
 
 		const width = `${window.innerWidth}px`;
@@ -95,7 +106,14 @@ class VideoPreview extends Component {
 
 			content = (
 				<div style={containerStyle}>
-					<video style={videoStyle} ref={this.ref} autoPlay loop muted playsInline>
+					<video
+						style={videoStyle} 
+						ref={this.ref} 
+						autoPlay 
+						loop={!controls} 
+						muted={!controls}
+						controls={controls} 
+						playsInline>
 						{sources}
 					</video>
 				</div>
@@ -111,9 +129,13 @@ class VideoPreview extends Component {
 				<img style={imageStyle} src={data.thumb} alt={data.subtitle} />
 			);
 		}
+
+		const containerStyle = {
+			marginBottom: '30px',
+		};
 		
 		return (
-			<div>
+			<div style={containerStyle} onClick={this.onClick}>
 				{content}
 				<div style={styles.footer}>
 					<span style={styles.title}>{data.title}</span>
@@ -121,6 +143,11 @@ class VideoPreview extends Component {
 						<LikeIcon style={styles.button} />
 						<span style={styles.title}>{likeCountFormatted}</span>
 						<FavoriteIcon style={styles.button} />
+					</div>
+				</div>
+				<div style={{ ...styles.footer, display: controls ? 'block' : 'none' }}>
+					<div>
+						<span style={styles.title}>{data.description}</span>
 					</div>
 				</div>
 			</div>

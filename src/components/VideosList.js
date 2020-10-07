@@ -112,6 +112,10 @@ class VideosList extends Component {
 		filter = filter.toLowerCase();
 		return title.toLowerCase().indexOf(filter) !== -1 || description.toLowerCase().indexOf(filter) !== -1;
 	}
+
+	onSelectVideo = (video) => {
+		this.props.onSelectVideo(video);
+	}
 	
 	render() {
 		const { videos, currentVideo } = this.state;
@@ -120,7 +124,9 @@ class VideosList extends Component {
 		const filteredVideos = !filter ? videos : videos.filter(video => this.containsFilter(video, filter));
 
 		const videosList = filteredVideos.map((video, index) => {
-			return (<VideoPreview key={video.id} data={video} isPlaying={currentVideo === index}/>)
+			return (
+				<VideoPreview key={video.id} data={video} isPlaying={currentVideo === index} onClick={this.onSelectVideo}/>
+			);
 		});
 
 		const preloaderStyle = { ...styles.preloader, display: filter ? 'none' : styles.preloader.display };
