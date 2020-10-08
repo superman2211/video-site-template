@@ -75,19 +75,44 @@ class VideoPreview extends Component {
 		}
 	}
 
+	onLikeClick = () => {
+		if (this.props.onLikeClick) {
+			const { id, liked } = this.props.data;
+			this.props.onLikeClick(id, !liked);
+		}
+	}
+
+	onFavoriteClick = () => {
+		if (this.props.onFavoriteClick) {
+			const { id, favorite } = this.props.data;
+			this.props.onFavoriteClick(id, !favorite);
+		}
+	}
+
 	render() {
 		const { data, isPlaying, controls } = this.props;
 
 		if (!data) {
 			return (<div>Video not found</div>);
 		}
-		
+
 		const styles = selectStyle(preparedStyles);
 
 		const width = `${window.innerWidth}px`;
 		const height = `${Math.ceil(window.innerWidth * WIDTH_TO_HEIGHT)}px`;
 
-		const likeCountFormatted = this.formatCount(data.likeCount);
+		const {
+			likeCount, 
+			liked, 
+			favorite,
+			sources, 
+			thumb, 
+			subtitle, 
+			title, 
+			description,
+		} = data;
+
+		const likeCountFormatted = this.formatCount(likeCount + (liked ? 1 : 0));
 
 		let content = null;
 
@@ -102,7 +127,7 @@ class VideoPreview extends Component {
 				width, height,
 			};
 
-			const sources = data.sources.map((source, index) => (<source key={index} src={source} />));
+			const sourcesTags = sources.map((source, index) => (<source key={index} src={source} />));
 
 			content = (
 				<div style={containerStyle}>
@@ -114,7 +139,7 @@ class VideoPreview extends Component {
 						muted={!controls}
 						controls={controls} 
 						playsInline>
-						{sources}
+						{sourcesTags}
 					</video>
 				</div>
 			);
@@ -126,28 +151,40 @@ class VideoPreview extends Component {
 			};
 
 			content = (
-				<img style={imageStyle} src={data.thumb} alt={data.subtitle} />
+				<img style={imageStyle} src={thumb} alt={subtitle} />
 			);
 		}
 
 		const containerStyle = {
 			marginBottom: '30px',
 		};
-		
+
+		const likeStyle = { ...styles.button };
+		if (liked) {
+			likeStyle.fill = 'red';
+		}
+
+		const favoriteStyle = { ...styles.button };
+		if (favorite) {
+			favoriteStyle.fill = 'red';
+		}
+
 		return (
-			<div style={containerStyle} onClick={this.onClick}>
-				{content}
+			<div style={containerStyle}>
+				<div onClick={this.onClick}>
+					{content}
+				</div>
 				<div style={styles.footer}>
-					<span style={styles.title}>{data.title}</span>
+					<span style={styles.title}>{title}</span>
 					<div style={styles.footerButtons}>
-						<LikeIcon style={styles.button} />
+						<LikeIcon style={likeStyle} onClick={this.onLikeClick}/>
 						<span style={styles.title}>{likeCountFormatted}</span>
-						<FavoriteIcon style={styles.button} />
+						<FavoriteIcon style={favoriteStyle} onClick={this.onFavoriteClick}/>
 					</div>
 				</div>
 				<div style={{ ...styles.footer, display: controls ? 'block' : 'none' }}>
 					<div>
-						<span style={styles.title}>{data.description}</span>
+						<span style={styles.title}>{description}</span>
 					</div>
 				</div>
 			</div>

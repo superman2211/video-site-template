@@ -93,7 +93,7 @@ class VideosList extends Component {
 		videos.forEach(video => {
 			video.id = VideosList.getNextId();
 			video.sortValue = Math.random();
-			video.likeCount = Math.round(Math.random() * 10000000);
+			video.likeCount = Math.round(Math.random() * (Math.random() > 0.5 ? 1000 : 10000));
 			video.time = Math.round(Math.random() * 60 * 60);
 		});
 		
@@ -116,6 +116,36 @@ class VideosList extends Component {
 	onSelectVideo = (video) => {
 		this.props.onSelectVideo(video);
 	}
+
+	onLikeVideo = (id, liked) => {
+		this.setState(prevState => {
+			const videos = prevState.videos.map(item => {
+				if(item.id === id) {
+					return {
+						...item,
+						liked,
+					}
+				}
+				return item;
+			});
+			return { videos };
+		});
+	}
+
+	onFavoriteVideo = (id, favorite) => {
+		this.setState(prevState => {
+			const videos = prevState.videos.map(item => {
+				if (item.id === id) {
+					return {
+						...item,
+						favorite,
+					}
+				}
+				return item;
+			});
+			return { videos };
+		});
+	}
 	
 	render() {
 		const { videos, currentVideo } = this.state;
@@ -125,7 +155,14 @@ class VideosList extends Component {
 
 		const videosList = filteredVideos.map((video, index) => {
 			return (
-				<VideoPreview key={video.id} data={video} isPlaying={currentVideo === index} onClick={this.onSelectVideo}/>
+				<VideoPreview 
+					key={video.id} 
+					data={video} 
+					isPlaying={currentVideo === index} 
+					onClick={this.onSelectVideo}
+					onLikeClick={this.onLikeVideo}
+					onFavoriteClick={this.onFavoriteVideo}
+				/>
 			);
 		});
 

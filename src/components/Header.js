@@ -41,7 +41,7 @@ const preparedStyles = prepareStyles(
 			fontSize: '15px',
 			fontFamily: 'Roboto, sans-serif',
 			outline: 'none',
-			margin: '10px',
+			margin: '10px 10px 10px 20px',
 			width: '100%',
 			border: 0,
 			borderBottom: '3px solid darkblue'
@@ -59,6 +59,7 @@ const preparedStyles = prepareStyles(
 		},
 		search: {
 			color: generalStyles.light.color,
+			backgroundColor: generalStyles.light.backgroundColor,
 		}
 	},
 	{
@@ -73,6 +74,8 @@ const preparedStyles = prepareStyles(
 		},
 		search: {
 			color: generalStyles.dark.color,
+			backgroundColor: generalStyles.dark.backgroundColor,
+			borderColor: 'lightblue',
 		}
 	}
 );
@@ -113,7 +116,7 @@ class Header extends Component {
 							<span>Videos</span>
 						</div>
 					</div>
-					
+
 					<div>
 						<CloseIcon style={styles.button} onClick={this.props.onVideoClose} />
 					</div>

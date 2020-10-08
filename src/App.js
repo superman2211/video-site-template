@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import Header from "./components/Header";
 import VideosList from './components/VideosList';
 import VideoPreview from './components/VideoPreview';
@@ -18,6 +18,7 @@ class App extends Component {
 			selectedVideo: null,
 		};
 		this.lastScrollPosition = 0;
+		this.videosList = createRef();
 	}
 
 	onScroll = (showHeader) => {
@@ -42,6 +43,32 @@ class App extends Component {
 		setTimeout(() => window.scrollTo(0, this.lastScrollPosition), 1);
 	}
 
+	onLikeVideo = (id, liked) => {
+		this.videosList.current.onLikeVideo(id, liked);
+
+		this.setState(prevState => {
+			return {
+				selectedVideo: {
+					...prevState.selectedVideo,
+					liked,
+				}
+			};
+		});
+	}
+
+	onFavoriteVideo = (id, favorite) => {
+		this.videosList.current.onFavoriteVideo(id, favorite);
+
+		this.setState(prevState => {
+			return {
+				selectedVideo: {
+					...prevState.selectedVideo,
+					favorite,
+				}
+			};
+		});
+	}
+
 	render() {
 		const { showHeader, filter, selectedVideo } = this.state;
 
@@ -56,6 +83,7 @@ class App extends Component {
 				
 				<div style={{ marginTop: headerStyle.height }}>
 					<VideosList
+						ref={this.videosList}
 						visible={!selectedVideo}
 						dataSource={DATA_SOURCE}
 						filter={filter}
@@ -64,7 +92,13 @@ class App extends Component {
 					/>
 				
 					<div style={{ display: selectedVideo ? 'block' : 'none' }}>
-						<VideoPreview data={selectedVideo} isPlaying={true} controls={true}/>
+						<VideoPreview 
+							data={selectedVideo} 
+							isPlaying={true} 
+							controls={true}
+							onLikeClick={this.onLikeVideo}
+							onFavoriteClick={this.onFavoriteVideo}
+						/>
 					</div>
 				</div>
 			</div>
