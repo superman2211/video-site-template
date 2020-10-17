@@ -44,6 +44,7 @@ const preparedStyles = prepareStyles(
 			margin: '10px 10px 10px 20px',
 			width: '100%',
 			border: 0,
+			borderRadius: 0,
 			borderBottom: '3px solid darkblue'
 		},
 	},
