@@ -4,6 +4,7 @@ import VideosList from './components/VideosList';
 import VideoPreview from './components/VideoPreview';
 import { updateBackgroundStyle } from './utils/stylesUtils';
 import headerStyle from './styles/headerStyle';
+import { LIGHT, DARK, DESKTOP, MOBILE } from './styles/styleTypes';
 
 updateBackgroundStyle();
 
@@ -16,6 +17,8 @@ class App extends Component {
 			showHeader: true,
 			filter: null,
 			selectedVideo: null,
+			mode: LIGHT,
+			device: MOBILE,
 		};
 		this.lastScrollPosition = 0;
 		this.videosList = createRef();

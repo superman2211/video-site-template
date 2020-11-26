@@ -1,4 +1,6 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Sample
+Only for mobile browsers <br/>
+[Sample build](https://antonovsergey2211.github.io/video-site-template/build/)
 
 ## Available Scripts
 
